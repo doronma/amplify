@@ -2,7 +2,7 @@ import React from 'react'
 
 function Banner() {
   return (
-    <div>Hello World Banner</div>
+    <div>Physics Questions/Answers</div>
   )
 }
 
