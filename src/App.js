@@ -10,19 +10,19 @@ import Banner from './Components/Banner';
 function App() {
   return (
     <div className="App">
-      <body className='App-header'>
-      <Banner/>
-      <Account>
-        <Status />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        </BrowserRouter>
-      </Account>
-      </body>
+      <div className='App-header'>
+        <Banner />
+        <Account>
+          <Status />
+          <BrowserRouter>
+            <Routes>
+           
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </BrowserRouter>
+        </Account>
+      </div>
     </div>
   );
 }
