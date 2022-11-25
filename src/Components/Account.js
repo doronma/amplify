@@ -37,6 +37,7 @@ const Account = (props) => {
       user.authenticateUser(authDetails, {
         onSuccess: (result) => {
           console.log('login success', result);
+          console.log('access token + ' + result.getAccessToken().getJwtToken());
           resolve(result);
         },
         onFailure: (err) => {

@@ -12,8 +12,9 @@ function Login() {
     authenticate(username, password)
       .then((data) => {
         console.log(data);
+        //alert(data)
         alert('login success');
-        window.location.reload();
+        //window.location.reload();
       })
       .catch((err) => {
         console.log(err);
