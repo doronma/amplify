@@ -8,14 +8,15 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
 import { useContext, useState } from 'react';
 import { AccountContext } from './Account';
 import { useNavigate } from 'react-router-dom';
+import { Link as LinkR } from  'react-router-dom';
 
 import Banner from './Banner';
 
@@ -24,7 +25,7 @@ function Copyright(props) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Physicis QA
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -36,8 +37,8 @@ const theme = createTheme();
 
 export default function SignIn() {
 
+  const [loginError, setLoginError] = useState(null);
   const { authenticate } = useContext(AccountContext);
-
   const navigate = useNavigate()
 
   const handleSubmit = (event) => {
@@ -48,20 +49,26 @@ export default function SignIn() {
       password: data.get('password'),
     });
     authenticate(data.get('email'), data.get('password'))
-    .then((data) => {
-      console.log(data);
-      //alert('login success');
-      navigate('/');
-    })
-    .catch((err) => {
-      console.log(err);
-      alert('login failure');
-    });
+      .then((data) => {
+        console.log(data);
+        navigate('/');
+      })
+      .catch((err) => {
+        setLoginError(err)
+      });
   };
+
+  const Messages = () => {
+    if (loginError!=null) {
+      return (
+        <Alert severity="error">{loginError.toString() }</Alert>
+      );
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
-      <Banner/>
+      <Banner />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -118,13 +125,14 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <LinkR  to="/signup">
                   {"Don't have an account? Sign Up"}
-                </Link>
+                </LinkR>
               </Grid>
             </Grid>
           </Box>
-        </Box>
+        </Box><br/>
+        <Messages />
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>

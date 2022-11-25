@@ -1,11 +1,11 @@
 
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Register from './Components/Register';
 import Login from './Components/Login';
 import { Account } from './Components/Account';
 import Main from './Components/Main';
 import Welcome from './Components/Welcome';
+import Signup from './Components/Signup';
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
 
             <Routes>
               <Route path="/" element={<Welcome />} />
-              <Route path="/register" element={<Register />} />
+              <Route path="/Signup" element={<Signup/>}/>
               <Route path="/Login" element={<Login />} />
               <Route path="/Main" element={<Main/>}  />
             </Routes>
