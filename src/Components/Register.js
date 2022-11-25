@@ -88,6 +88,8 @@ function Register() {
           <button type="submit">Verify</button>
         </form>
       )}
+      <br/>
+      
     </div>
   );
 }
