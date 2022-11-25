@@ -1,8 +1,9 @@
 import React from 'react'
+import BasicCard from './BasicCard'
 
 function Banner() {
   return (
-    <div>Physics Questions/Answers</div>
+    <div><BasicCard/></div>
   )
 }
 
