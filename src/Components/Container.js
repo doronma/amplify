@@ -1,9 +1,12 @@
 
 import physics_image from '../assets/physics2.jpg'
+import QuestionList from './QuestionList';
 
 
 
 function Container() {
+
+   
 
 
     return (
@@ -13,6 +16,7 @@ function Container() {
                 <br></br>
 
                 <img src={physics_image} alt="physicis" style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto', display: 'block' }} />
+               <QuestionList/>
             </div></div>
     );
 }
