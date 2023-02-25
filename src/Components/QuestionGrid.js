@@ -11,8 +11,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function QuestionGrid() {
+
+    const navigate = useNavigate()
+
+    const createQuestion = () => {
+      navigate('/Main/CreateQuestion');
+    };
 
     const url = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions"
     const [fetchedData, setFetchedData] = useState([]);
@@ -102,7 +109,7 @@ export default function QuestionGrid() {
                             spacing={2}
                             justifyContent="center"
                         >
-                            <Button variant="contained">Create new question</Button>
+                            <Button variant="contained" onClick={createQuestion}>Create new question</Button>
                         </Stack>
                     </Container>
                 </Box>
