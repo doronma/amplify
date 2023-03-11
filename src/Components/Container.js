@@ -2,6 +2,7 @@
 import QuestionGrid from './QuestionGrid';
 import QuestionList from './QuestionList';
 import CreateQuestion from './CreateQuestion';
+import QuestionDetails from './QuestionDetails';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
@@ -37,6 +38,7 @@ function Container() {
                     <Route path="/Grid" element={<QuestionGrid />} />
                     <Route path="/Table" element={<QuestionList />} />
                     <Route path="/CreateQuestion" element={<CreateQuestion />} />
+                    <Route path="/QuestionDetails/:id" element={<QuestionDetails />} />
 
                 </Routes>
                
