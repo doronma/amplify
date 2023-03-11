@@ -21,12 +21,11 @@ const theme = createTheme();
 function Banner() {
 
   const [status, setStatus] = useState(false);
-  const { getSession, logout } = useContext(AccountContext);
+  const { getSession, logout, getUserName } = useContext(AccountContext);
 
   useEffect(() => {
     getSession()
       .then((session) => {
-        console.log('Session: ', session);
         setStatus(true);
       })
       .catch((err) => {
@@ -50,7 +49,14 @@ function Banner() {
   const LoginButton = () => {
     if (status) {
       return (
+        <div>
+          <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>
+          {getUserName()} 
+            
+            </Typography>
+         
         <Button color="inherit" onClick={handleLogout}>Logout</Button>
+        </div>
       );
     }
     else return (

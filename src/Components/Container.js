@@ -34,6 +34,7 @@ function Container() {
             <ThemeProvider theme={theme}>
                 <Routes>
                     <Route path="/" element={<QuestionGrid />} />
+                    <Route path="/Grid" element={<QuestionGrid />} />
                     <Route path="/Table" element={<QuestionList />} />
                     <Route path="/CreateQuestion" element={<CreateQuestion />} />
 

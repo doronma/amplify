@@ -58,8 +58,11 @@ const Account = (props) => {
     window.location.href = '/';
   };
 
+  const getUserName = () => UserPool.getCurrentUser().getUsername();
+ 
+
   return (
-    <AccountContext.Provider value={{ authenticate, getSession, logout }}>
+    <AccountContext.Provider value={{ authenticate, getSession, logout, getUserName }}>
       {props.children}
     </AccountContext.Provider>
   );
