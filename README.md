@@ -12,3 +12,5 @@ https://blog.cloudthat.com/aws-cognito-service-with-react-js-application-setup/
 ### UI Templates
 https://mui.com/material-ui/getting-started/overview/
 https://github.com/mui/material-ui/tree/v5.10.14/docs/data/material/getting-started/templates
+### Icons
+https://mui.com/material-ui/material-icons/

@@ -30,29 +30,26 @@ const QuestionDetails = () => {
 
     const url_question = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions/" + id + "/details"
     const url_answeres = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions/" + id + "/answers"
+    const url_new_question = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/answers/" + id
     const [fetchedAnsweres, setFetchedAnsweres] = useState([]);
     const [showCreateAnswer, setShowCreateAnswer] = useState(false)
     const [fetchQuestion, setFetchQuestion] = useState()
 
+    const getAnsweres = async () => {
+        const result = await axios.get(url_answeres)
+        setFetchedAnsweres(result);
+    };
     useEffect(() => {
 
         const getQuestionDetails = async () => {
             const result = await axios.get(url_question)
-            console.log(result)
             setFetchQuestion(result);
         }
         getQuestionDetails();
-
-        const getAnsweres = async () => {
-            const result = await axios.get(url_answeres)
-            console.log(result)
-
-            setFetchedAnsweres(result);
-        };
         getAnsweres();
 
 
-    }, [url_answeres, url_question]);
+    }, []);
 
     const questionDetails = () => {
         if (fetchQuestion && fetchQuestion.data) {
@@ -117,6 +114,31 @@ const QuestionDetails = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        const answer = {
+
+            QuestionID: id,
+            date: getCurrentTime(),
+            message: data.get('answer'),
+            teacherName: data.get('user'),
+            AnswerID: data.get('id')
+
+        }
+        const getData = async () => {
+            const result = await axios.post(url_new_question, answer, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            console.log(result)
+
+
+            getAnsweres();
+
+            setShowCreateAnswer(false)
+        };
+        getData();
+
     }
 
     const addAnswerForm = () => {
@@ -188,7 +210,7 @@ const QuestionDetails = () => {
         if (!showCreateAnswer && fetchedAnsweres.data && fetchedAnsweres.data.length > 0) {
             return (
                 <Box sx={{
-                    marginTop: 4,
+                    marginTop: 6,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -208,7 +230,6 @@ const QuestionDetails = () => {
         if (fetchedAnsweres.data && !showCreateAnswer) {
 
             let answerArray = fetchedAnsweres.data
-            console.log(answerArray)
             return answerArray.map((answer) => (
                 <Grid item key={answer.AnswerID} xs={12} sm={6} md={4}>
                     <Card
