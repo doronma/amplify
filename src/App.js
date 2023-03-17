@@ -21,7 +21,7 @@ function App() {
               <Route path="/" element={<Welcome />} />
               <Route path="/Signup" element={<Signup/>}/>
               <Route path="/Login" element={<Login />} />
-              <Route path="/Main" element={<Main/>}  />
+              <Route path="/Main/*" element={<Main/>}  />
             </Routes>
           </Account>
         </BrowserRouter>
