@@ -12,6 +12,8 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 import axios from "axios";
 import { getUuid, getCurrentTime } from "../utils/formUtils"
 
@@ -25,18 +27,21 @@ const QuestionDetails = () => {
         navigate('/Main');
     };
 
-    const url = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions"
+
+    const url_question = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions/" + id + "/details"
     const url_answeres = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions/" + id + "/answers"
-    const [fetchedData, setFetchedData] = useState([]);
     const [fetchedAnsweres, setFetchedAnsweres] = useState([]);
     const [showCreateAnswer, setShowCreateAnswer] = useState(false)
-    useEffect(() => {
-        const getData = async () => {
-            const result = await axios.get(url)
+    const [fetchQuestion, setFetchQuestion] = useState()
 
-            setFetchedData(result);
-        };
-        getData();
+    useEffect(() => {
+
+        const getQuestionDetails = async () => {
+            const result = await axios.get(url_question)
+            console.log(result)
+            setFetchQuestion(result);
+        }
+        getQuestionDetails();
 
         const getAnsweres = async () => {
             const result = await axios.get(url_answeres)
@@ -45,7 +50,54 @@ const QuestionDetails = () => {
             setFetchedAnsweres(result);
         };
         getAnsweres();
-    }, []);
+
+
+    }, [url_answeres, url_question]);
+
+    const questionDetails = () => {
+        if (fetchQuestion && fetchQuestion.data) {
+            let question = fetchQuestion.data
+            return (
+                <div>
+                    <Container component="main" maxWidth="xs">
+                        <CssBaseline />
+                        <Box
+                            sx={{
+                                marginTop: 1,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                                <NotListedLocationIcon /> Question
+                            </Typography>
+                            <Card
+                                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                            >
+                                <CardContent sx={{ flexGrow: 1 }}>
+                                    <Typography gutterBottom variant="h5" component="h2">
+                                        {question.QuestionID}
+                                    </Typography>
+                                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                        {question.date}
+                                    </Typography>
+                                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                        {question.userName}
+                                    </Typography>
+                                    <Typography>
+                                        {question.message}
+                                    </Typography>
+                                </CardContent>
+                                {cardActions()}
+                            </Card>
+                        </Box>
+                    </Container>
+                </div>
+            )
+
+        }
+    }
 
     const cardActions = () => {
         if (!showCreateAnswer) {
@@ -55,40 +107,6 @@ const QuestionDetails = () => {
                 </CardActions>
 
             )
-        }
-    }
-    const questions = () => {
-        if (fetchedData.data) {
-            let questionArray = fetchedData.data
-            questionArray = questionArray.filter((item) => {
-                return item.QuestionID === id
-            });
-            console.log(questionArray)
-            return questionArray.map((question) => (
-                <Grid item key={question.QuestionID} xs={12} sm={6} md={4}>
-                    <Card
-                        sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                    >
-
-                        <CardContent sx={{ flexGrow: 1 }}>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                {question.QuestionID}
-                            </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                {question.date}
-                            </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                {question.userName}
-                            </Typography>
-                            <Typography>
-                                {question.message}
-                            </Typography>
-                        </CardContent>
-                        {cardActions()}
-                    </Card>
-                </Grid>
-            ))
-
         }
     }
 
@@ -169,11 +187,19 @@ const QuestionDetails = () => {
     const answertTitle = () => {
         if (!showCreateAnswer && fetchedAnsweres.data && fetchedAnsweres.data.length > 0) {
             return (
-                <Container maxWidth="sm">
-                    <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                        Answers
-                    </Typography>
-                </Container>
+                <Box sx={{
+                    marginTop: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}>
+                    <Container maxWidth="sm">
+
+                        <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                            <LibraryBooksIcon /> Answers
+                        </Typography>
+                    </Container>
+                </Box>
             )
         }
     }
@@ -230,12 +256,12 @@ const QuestionDetails = () => {
         <div>
             <CssBaseline />
             <main>
-                {/* Hero unit */}
                 <Box
                     sx={{
                         bgcolor: 'background.paper',
                         pt: 8,
                         pb: 6,
+
                     }}
                 >
                     <Container maxWidth="sm">
@@ -250,12 +276,7 @@ const QuestionDetails = () => {
                         </Typography>
                     </Container>
                 </Box>
-                <Container sx={{ py: 1 }} maxWidth="md">
-                    {/* End hero unit */}
-                    <Grid container spacing={4}>
-                        {questions()}
-                    </Grid>
-                </Container>
+                {questionDetails()}
                 {answertTitle()}
                 <Container sx={{ py: 1 }} maxWidth="md">
                     {/* End hero unit */}
