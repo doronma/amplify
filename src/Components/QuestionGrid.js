@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import { parseDate } from '../utils/formUtils'
 
 export default function QuestionGrid() {
 
@@ -23,8 +24,7 @@ export default function QuestionGrid() {
 
     const QuestionDetails = (id) => {
         return () => {
-            console.log(id)
-            navigate('/Main/QuestionDetails/'+id)
+            navigate('/Main/QuestionDetails/' + id)
         }
     }
 
@@ -43,8 +43,8 @@ export default function QuestionGrid() {
         if (fetchedData.data) {
             const questionArray = fetchedData.data
             questionArray.sort((a, b) => {
-                const a_num = Number(a.QuestionID)
-                const b_num = Number(b.QuestionID)
+                const a_num = parseDate(a.date)
+                const b_num = parseDate(b.date)
                 let comparison = 0;
                 if (a_num > b_num) {
                     comparison = 1;
@@ -53,7 +53,6 @@ export default function QuestionGrid() {
                 }
                 return comparison;
             });
-            console.log(questionArray)
             return questionArray.map((question) => (
                 //return fetchedData.data.map((card) => (
                 <Grid item key={question.QuestionID} xs={12} sm={6} md={4}>

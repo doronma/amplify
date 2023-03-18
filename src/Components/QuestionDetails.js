@@ -15,7 +15,7 @@ import Container from '@mui/material/Container';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
 import axios from "axios";
-import { getUuid, getCurrentTime } from "../utils/formUtils"
+import { getUuid, getCurrentTime,parseDate } from "../utils/formUtils"
 
 const QuestionDetails = () => {
 
@@ -131,10 +131,7 @@ const QuestionDetails = () => {
                 }
             })
             console.log(result)
-
-
             getAnsweres();
-
             setShowCreateAnswer(false)
         };
         getData();
@@ -230,6 +227,18 @@ const QuestionDetails = () => {
         if (fetchedAnsweres.data && !showCreateAnswer) {
 
             let answerArray = fetchedAnsweres.data
+            answerArray.sort((a, b) => {
+                const a_num = parseDate(a.date)
+                const b_num = parseDate(b.date)
+                let comparison = 0;
+                if (a_num > b_num) {
+                    comparison = 1;
+                } else if (a_num < b_num) {
+                    comparison = -1;
+                }
+                return comparison;
+            });
+
             return answerArray.map((answer) => (
                 <Grid item key={answer.AnswerID} xs={12} sm={6} md={4}>
                     <Card
