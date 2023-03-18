@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { AccountContext } from './Account';
 import { useNavigate } from 'react-router-dom';
 import { getUuid, getCurrentTime } from "../utils/formUtils"
@@ -37,6 +37,7 @@ export default function CreateQuestion() {
           'Content-Type': 'application/json',
         }
       })
+      console.log(result)
       navigate('/Main');
     };
     getData();
