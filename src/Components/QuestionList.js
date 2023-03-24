@@ -58,7 +58,6 @@ function QuestionList() {
                 }
                 return comparison;
             });
-            console.log(questionArray)
             return questionArray.map(function (question) {
                 return <StyledTableRow key={question.QuestionID} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                     <StyledTableCell align="left">{question.QuestionID}</StyledTableCell >
