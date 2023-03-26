@@ -1,0 +1,167 @@
+openapi: 3.0.0
+x-stoplight:
+  id: lslpjbwkoe17z
+info:
+  title: PhyisicsQA
+  version: '1.0'
+  description: Manage Phyisics Questions
+  contact:
+    name: Yaara Marcus
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/answers/{Id}':
+    parameters:
+      - schema:
+          type: string
+        name: Id
+        in: path
+        required: true
+    post:
+      operationId: post-questions-Id
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnswerPost'
+  /questions:
+    get:
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionList'
+        '400':
+          description: Bad Request
+      operationId: get-questions
+      description: Get All Questions
+    post:
+      operationId: post-questions
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+      description: Post a new question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionPost'
+  '/questions/{id}/answers':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnswerList'
+      operationId: get-questions-id-answers
+      description: Get Answers by question id
+  '/questions/{id}/details':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionPost'
+      operationId: get-question-details
+      description: Get Question Detaill By ID
+components:
+  schemas:
+    AnswerList:
+      title: AnswerList
+      x-stoplight:
+        id: v2vxjj7wlxb40
+      type: object
+      properties:
+        id:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnswerPost'
+    AnswerPost:
+      title: AnswerPost
+      x-stoplight:
+        id: ue20z51v367st
+      type: object
+      description: Question Post Data
+      x-internal: false
+      properties:
+        answerId:
+          type: string
+          maxLength: 20
+          minLength: 20
+        teacherName:
+          type: string
+          minLength: 5
+          maxLength: 20
+        date:
+          type: string
+          format: date-time
+        message:
+          type: string
+          maxLength: 250
+          minLength: 20
+        questionId:
+          type: string
+      required:
+        - answerId
+        - teacherName
+        - date
+        - message
+    QuestionList:
+      title: QuestionList
+      x-stoplight:
+        id: bmztee4cwbwab
+      type: object
+      properties:
+        questions:
+          type: array
+          items:
+            $ref: '#/components/schemas/QuestionPost'
+    QuestionPost:
+      title: QuestionPost
+      x-stoplight:
+        id: cgrny7q688pt4
+      type: object
+      description: Question Post Data
+      x-internal: false
+      properties:
+        id:
+          type: string
+        userName:
+          type: string
+          minLength: 5
+          maxLength: 20
+        date:
+          type: string
+          format: date-time
+        message:
+          type: string
+          maxLength: 250
+          minLength: 20
