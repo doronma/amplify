@@ -14,3 +14,5 @@ https://mui.com/material-ui/getting-started/overview/
 https://github.com/mui/material-ui/tree/v5.10.14/docs/data/material/getting-started/templates
 ### Icons
 https://mui.com/material-ui/material-icons/
+
+![Project Diagram](/documentation/Questions.jpg "Project Diagram")
