@@ -1,4 +1,8 @@
-import * as React from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import axios from "axios";
+
 import Avatar from '@mui/material/Avatar';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Button from '@mui/material/Button';
@@ -7,28 +11,34 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useContext } from 'react';
-import { AccountContext } from './Account';
-import { useNavigate } from 'react-router-dom';
-import { getUuid, getCurrentTime } from "../utils/formUtils"
-import axios from "axios";
 
+import { AccountContext } from './Account';
+import { getUuid, getCurrentTime } from "../utils/formUtils"
 
 export default function CreateQuestion() {
 
-  const { getUserName } = useContext(AccountContext);
+  const { getCognitoSession } = useContext(AccountContext);
+  const [currentSession, setCurrentSession] = useState(null)
+  const [userName,setUserName] = useState("")
   const navigate = useNavigate()
+
+  useEffect(() => {
+    getCognitoSession().then((session) => {
+      console.log(session)
+      setCurrentSession(session)
+      setUserName(session.user.userName)
+    }, (err) => {
+    })
+  }, [getCognitoSession]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const question = {
-
       QuestionID: data.get('id'),
       date: getCurrentTime(),
       message: data.get('question'),
       userName: data.get('user')
-
     }
     const url = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions";
     const getData = async () => {
@@ -43,6 +53,8 @@ export default function CreateQuestion() {
     getData();
 
   }
+
+ 
 
   return (
     <div>
@@ -79,7 +91,7 @@ export default function CreateQuestion() {
               id="user"
               label="User"
               name="user"
-              value={getUserName()}
+              value={userName}
             />
             <TextField
               margin="normal"

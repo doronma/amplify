@@ -1,5 +1,8 @@
-import * as React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
+
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,11 +15,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 
-import { useNavigate } from 'react-router-dom';
-
-import { CognitoUser, CognitoUserAttribute } from 'amazon-cognito-identity-js';
 import UserPool from '../UserPool';
-
 import Banner from './Banner';
 
 function Copyright(props) {
@@ -40,7 +39,6 @@ export default function Signup() {
   const [verifyProcess, setVerifyProcess] = useState(false);
   const [username, setUsername] = useState('');
   
-
   const onSubmit = (event) => {
     event.preventDefault();
     event.preventDefault();
@@ -163,7 +161,6 @@ export default function Signup() {
   }
 
   const navigate = useNavigate()
-
 
   return (
     <ThemeProvider theme={theme}>

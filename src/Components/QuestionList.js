@@ -1,7 +1,7 @@
-
+import { useEffect, useState } from "react";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -30,7 +30,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         border: 0,
     },
 }));
-
 
 function QuestionList() {
     const url = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions"
