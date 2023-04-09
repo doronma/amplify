@@ -18,14 +18,14 @@ import { getUuid, getCurrentTime } from "../utils/formUtils"
 export default function CreateQuestion() {
 
   const { getCognitoSession } = useContext(AccountContext);
-  const [currentSession, setCurrentSession] = useState(null)
+  //const [currentSession, setCurrentSession] = useState(null)
   const [userName,setUserName] = useState("")
   const navigate = useNavigate()
 
   useEffect(() => {
     getCognitoSession().then((session) => {
       console.log(session)
-      setCurrentSession(session)
+      //setCurrentSession(session)
       setUserName(session.user.userName)
     }, (err) => {
     })
@@ -53,8 +53,6 @@ export default function CreateQuestion() {
     getData();
 
   }
-
- 
 
   return (
     <div>

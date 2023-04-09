@@ -23,7 +23,7 @@ import { AccountContext } from './Account';
 const QuestionDetails = () => {
 
     const { getCognitoSession } = useContext(AccountContext);
-    const [currentSession, setCurrentSession] = useState(null)
+    //const [currentSession, setCurrentSession] = useState(null)
     const [userName, setUserName] = useState("")
 
     let { id } = useParams();
@@ -49,7 +49,7 @@ const QuestionDetails = () => {
 
         getCognitoSession().then((session) => {
             console.log(session)
-            setCurrentSession(session)
+            //setCurrentSession(session)
             setUserName(session.user.userName)
         }, (err) => {
         })
@@ -62,9 +62,9 @@ const QuestionDetails = () => {
         getAnsweres();
 
 
-    }, [getCognitoSession,url_question]);
+    }, []);
 
-    const questionDetails = () => {
+    const QuestionDetails = () => {
         if (fetchQuestion && fetchQuestion.data) {
             let question = fetchQuestion.data
             return (
@@ -99,17 +99,16 @@ const QuestionDetails = () => {
                                         {question.message}
                                     </Typography>
                                 </CardContent>
-                                {cardActions()}
+                                <CreateAnswerButton/>
                             </Card>
                         </Box>
                     </Container>
                 </div>
             )
-
         }
     }
 
-    const cardActions = () => {
+    const CreateAnswerButton = () => {
         if (!showCreateAnswer) {
             return (
                 <CardActions>
@@ -122,20 +121,17 @@ const QuestionDetails = () => {
 
     const addAnswer = () => {
         setShowCreateAnswer(true)
-
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const answer = {
-
             QuestionID: id,
             date: getCurrentTime(),
             message: data.get('answer'),
             teacherName: data.get('user'),
             AnswerID: data.get('id')
-
         }
         const getData = async () => {
             const result = await axios.post(url_new_question, answer, {
@@ -148,10 +144,9 @@ const QuestionDetails = () => {
             setShowCreateAnswer(false)
         };
         getData();
-
     }
 
-    const addAnswerForm = () => {
+    const AnswerForm = () => {
         if (showCreateAnswer) {
             return (
                 <div>
@@ -216,7 +211,7 @@ const QuestionDetails = () => {
         }
     }
 
-    const answertTitle = () => {
+    const AnswertTitle = () => {
         if (!showCreateAnswer && fetchedAnsweres.data && fetchedAnsweres.data.length > 0) {
             return (
                 <Box sx={{
@@ -236,7 +231,7 @@ const QuestionDetails = () => {
         }
     }
 
-    const answers = () => {
+    const Answers = () => {
         if (fetchedAnsweres.data && !showCreateAnswer) {
 
             let answerArray = fetchedAnsweres.data
@@ -278,7 +273,7 @@ const QuestionDetails = () => {
         }
     }
 
-    const backToQuestionsButton = () => {
+    const BackToQuestionsButton = () => {
         if (!showCreateAnswer) {
             return (
                 <Container maxWidth="sm">
@@ -319,16 +314,16 @@ const QuestionDetails = () => {
                         </Typography>
                     </Container>
                 </Box>
-                {questionDetails()}
-                {answertTitle()}
+                <QuestionDetails/>
+                <AnswertTitle/>
                 <Container sx={{ py: 1 }} maxWidth="md">
                     {/* End hero unit */}
                     <Grid container spacing={4}>
-                        {answers()}
+                        <Answers/>
                     </Grid>
                 </Container>
-                {backToQuestionsButton()}
-                {addAnswerForm()}
+                <BackToQuestionsButton/>
+                <AnswerForm/>
             </main>
         </div>
     );

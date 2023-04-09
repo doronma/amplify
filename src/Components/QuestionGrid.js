@@ -51,7 +51,7 @@ export default function QuestionGrid() {
         getData();
     }, []);
 
-    const questions = () => {
+    const Questions = () => {
         if (fetchedData.data) {
             let questionArray = fetchedData.data;
             questionArray = questionArray.filter((question) => {
@@ -138,7 +138,7 @@ export default function QuestionGrid() {
                 <Container sx={{ py: 1 }} maxWidth="md">
                     {/* End hero unit */}
                     <Grid container spacing={4}>
-                        {questions()}
+                       <Questions/>
                     </Grid>
                 </Container>
                 <Stack

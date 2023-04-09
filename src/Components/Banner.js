@@ -18,7 +18,6 @@ const theme = createTheme();
 
 function Banner() {
 
-  const [status, setStatus] = useState(false);
   const [currentSession, setCurrentSession] = useState(null)
   const { getCognitoSession, logout } = useContext(AccountContext);
 
@@ -27,9 +26,8 @@ function Banner() {
     getCognitoSession().then((session) => {
       console.log(session)
       setCurrentSession(session)
-      setStatus(true);
     }, (err) => {
-      setStatus(false);
+      setCurrentSession(null)
     })
   }, [getCognitoSession]);
 
@@ -43,7 +41,7 @@ function Banner() {
   };
 
   const LoginButton = () => {
-    if (status) {
+    if (currentSession) {
       return (
         <div>
           <Typography variant="h6" component="span" sx={{ flexGrow: 1 }}>

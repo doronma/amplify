@@ -43,7 +43,7 @@ function QuestionList() {
         getData();
     }, []);
 
-    const questions = () => {
+    const Questions = () => {
         if (fetchedData.data) {
             const questionArray = fetchedData.data
             questionArray.sort((a, b) => {
@@ -84,7 +84,7 @@ function QuestionList() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {questions()}
+                        <Questions/>
                     </TableBody>
                 </Table>
             </TableContainer>
