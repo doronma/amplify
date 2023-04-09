@@ -1,6 +1,8 @@
 import { useContext, useState, useEffect } from 'react';
-import { AccountContext } from './Account';
 import { useNavigate, useParams } from 'react-router-dom';
+
+import axios from "axios";
+
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Card from '@mui/material/Card';
@@ -14,12 +16,16 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
-import axios from "axios";
-import { getUuid, getCurrentTime,parseDate } from "../utils/formUtils"
+
+import { getUuid, getCurrentTime, parseDate } from "../utils/formUtils"
+import { AccountContext } from './Account';
 
 const QuestionDetails = () => {
 
-    const { getUserName } = useContext(AccountContext);
+    const { getCognitoSession } = useContext(AccountContext);
+    const [currentSession, setCurrentSession] = useState(null)
+    const [userName, setUserName] = useState("")
+
     let { id } = useParams();
     const navigate = useNavigate()
 
@@ -41,6 +47,13 @@ const QuestionDetails = () => {
     };
     useEffect(() => {
 
+        getCognitoSession().then((session) => {
+            console.log(session)
+            setCurrentSession(session)
+            setUserName(session.user.userName)
+        }, (err) => {
+        })
+
         const getQuestionDetails = async () => {
             const result = await axios.get(url_question)
             setFetchQuestion(result);
@@ -49,7 +62,7 @@ const QuestionDetails = () => {
         getAnsweres();
 
 
-    }, []);
+    }, [getCognitoSession,url_question]);
 
     const questionDetails = () => {
         if (fetchQuestion && fetchQuestion.data) {
@@ -172,7 +185,7 @@ const QuestionDetails = () => {
                                     id="user"
                                     label="User"
                                     name="user"
-                                    value={getUserName()}
+                                    value={userName}
                                 />
 
                                 <TextField
