@@ -16,6 +16,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
+import Rating from '@mui/material/Rating';
 
 import { getUuid, getCurrentTime, parseDate } from "../utils/formUtils"
 import { AccountContext } from './Account';
@@ -40,9 +41,10 @@ const QuestionDetails = () => {
     const [fetchedAnsweres, setFetchedAnsweres] = useState([]);
     const [showCreateAnswer, setShowCreateAnswer] = useState(false)
     const [fetchQuestion, setFetchQuestion] = useState()
+    const [userRateValues, setUserRateValues] = useState({});
 
-    const getAnsweres = async () => {
-        const result = await axios.get(url_answeres)
+    const getAnsweres = async (sessionUser) => {
+        const result = await axios.get(url_answeres, { params: { user: sessionUser } })
         setFetchedAnsweres(result);
     };
     useEffect(() => {
@@ -51,6 +53,9 @@ const QuestionDetails = () => {
             console.log(session)
             //setCurrentSession(session)
             setUserName(session.user.userName)
+            getAnsweres(session.user.userName);
+           
+            
         }, (err) => {
         })
 
@@ -59,7 +64,7 @@ const QuestionDetails = () => {
             setFetchQuestion(result);
         }
         getQuestionDetails();
-        getAnsweres();
+        
 
 
     }, []);
@@ -99,7 +104,7 @@ const QuestionDetails = () => {
                                         {question.message}
                                     </Typography>
                                 </CardContent>
-                                <CreateAnswerButton/>
+                                <CreateAnswerButton />
                             </Card>
                         </Box>
                     </Container>
@@ -140,7 +145,7 @@ const QuestionDetails = () => {
                 }
             })
             console.log(result)
-            getAnsweres();
+            getAnsweres(userName);
             setShowCreateAnswer(false)
         };
         getData();
@@ -253,10 +258,10 @@ const QuestionDetails = () => {
                         sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                     >
                         <CardContent sx={{ flexGrow: 1 }}>
-                            <Typography gutterBottom variant="h5" component="h2">
+                            {/* <Typography gutterBottom variant="h5" component="h2">
                                 {answer.AnswerID}
-                            </Typography>
-                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            </Typography> */}
+                            <Typography sx={{ fontSize: 20 }} color="text.secondary" gutterBottom>
                                 {answer.date}
                             </Typography>
                             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -265,12 +270,28 @@ const QuestionDetails = () => {
                             <Typography>
                                 {answer.message}
                             </Typography>
+                            <br />
+                            <Typography component="legend" sx={{ fontSize: 14 }} color="text.secondary">Average Rating</Typography>
+                            <Rating name="read-only" value={answer.avg_rating} readOnly />
+                            <Typography component="legend" sx={{ fontSize: 14 }} color="text.secondary">Your Rating</Typography>
+                            <Rating
+                                name="simple-controlled"
+                                value={userRateValues[answer.AnswerID]}
+                                onChange={(event, newValue) => {
+                                    updateUserRateValues(answer.AnswerID, newValue)
+                                }}
+                            />
                         </CardContent>
                     </Card>
                 </Grid>
             ))
-
         }
+    }
+
+    const updateUserRateValues = (answerId, newValue) => {
+        let newUserRateValues = { ...userRateValues }
+        newUserRateValues[answerId] = newValue
+        setUserRateValues(newUserRateValues)
     }
 
     const BackToQuestionsButton = () => {
@@ -314,16 +335,16 @@ const QuestionDetails = () => {
                         </Typography>
                     </Container>
                 </Box>
-                <QuestionDetails/>
-                <AnswertTitle/>
+                <QuestionDetails />
+                <AnswertTitle />
                 <Container sx={{ py: 1 }} maxWidth="md">
                     {/* End hero unit */}
                     <Grid container spacing={4}>
-                        <Answers/>
+                        <Answers />
                     </Grid>
                 </Container>
-                <BackToQuestionsButton/>
-                <AnswerForm/>
+                <BackToQuestionsButton />
+                <AnswerForm />
             </main>
         </div>
     );
