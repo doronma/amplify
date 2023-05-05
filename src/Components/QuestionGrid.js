@@ -16,6 +16,8 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 
 import { parseDate } from '../utils/formUtils'
+import { BASE_URL } from "../utils/services";
+
 
 export default function QuestionGrid() {
 
@@ -31,7 +33,7 @@ export default function QuestionGrid() {
         }
     }
 
-    const url = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions"
+    const url = BASE_URL + "/questions"
     const [fetchedData, setFetchedData] = useState([]);
     const [searchString, setSearchString] = useState('')
 
@@ -133,6 +135,7 @@ export default function QuestionGrid() {
                             name="messageSearch"
                             onChange={handleMessageSearchChange}
                         />
+                         <Button variant="contained" onClick={createQuestion}>Create new question</Button>
                     </Container>
                 </Box>
                 <Container sx={{ py: 1 }} maxWidth="md">

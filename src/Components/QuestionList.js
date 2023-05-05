@@ -11,6 +11,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+import { BASE_URL } from "../utils/services";
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: theme.palette.common.black,
@@ -32,7 +34,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function QuestionList() {
-    const url = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions"
+    const url = BASE_URL + "/questions"
     const [fetchedData, setFetchedData] = useState([]);
     useEffect(() => {
         const getData = async () => {
