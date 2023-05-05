@@ -10,7 +10,6 @@ const Main = () => {
   const navigate = useNavigate()
   useEffect(() => {
     getCognitoSession().then((session) => {
-      console.log(session)
     }, (err) => {
       navigate('/Login')
     })

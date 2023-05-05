@@ -20,11 +20,11 @@ import Rating from '@mui/material/Rating';
 
 import { getUuid, getCurrentTime, parseDate } from "../utils/formUtils"
 import { AccountContext } from './Account';
+import { BASE_URL }  from '../utils/services';
 
 const QuestionDetails = () => {
 
     const { getCognitoSession } = useContext(AccountContext);
-    //const [currentSession, setCurrentSession] = useState(null)
     const [userName, setUserName] = useState("")
 
     let { id } = useParams();
@@ -34,28 +34,22 @@ const QuestionDetails = () => {
         navigate('/Main');
     };
 
-
-    const url_question = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions/" + id + "/details"
-    const url_answeres = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions/" + id + "/answers"
-    const url_new_question = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/answers/" + id
+    const url_question = BASE_URL + "/questions/" + id + "/details"
+    const url_answeres = BASE_URL + "/questions/" + id + "/answers"
+    const url_new_question = BASE_URL + "/answers/" + id
     const [fetchedAnsweres, setFetchedAnsweres] = useState([]);
     const [showCreateAnswer, setShowCreateAnswer] = useState(false)
     const [fetchQuestion, setFetchQuestion] = useState()
-    const [userRateValues, setUserRateValues] = useState({});
 
     const getAnsweres = async (sessionUser) => {
         const result = await axios.get(url_answeres, { params: { user: sessionUser } })
-        setFetchedAnsweres(result);
+        setFetchedAnsweres(result.data);
     };
     useEffect(() => {
 
         getCognitoSession().then((session) => {
-            console.log(session)
-            //setCurrentSession(session)
             setUserName(session.user.userName)
             getAnsweres(session.user.userName);
-           
-            
         }, (err) => {
         })
 
@@ -64,8 +58,6 @@ const QuestionDetails = () => {
             setFetchQuestion(result);
         }
         getQuestionDetails();
-        
-
 
     }, []);
 
@@ -139,12 +131,11 @@ const QuestionDetails = () => {
             AnswerID: data.get('id')
         }
         const getData = async () => {
-            const result = await axios.post(url_new_question, answer, {
+            await axios.post(url_new_question, answer, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             })
-            console.log(result)
             getAnsweres(userName);
             setShowCreateAnswer(false)
         };
@@ -237,9 +228,9 @@ const QuestionDetails = () => {
     }
 
     const Answers = () => {
-        if (fetchedAnsweres.data && !showCreateAnswer) {
+        if (fetchedAnsweres && !showCreateAnswer) {
 
-            let answerArray = fetchedAnsweres.data
+            let answerArray = fetchedAnsweres
             answerArray.sort((a, b) => {
                 const a_num = parseDate(a.date)
                 const b_num = parseDate(b.date)
@@ -252,7 +243,7 @@ const QuestionDetails = () => {
                 return comparison;
             });
 
-            return answerArray.map((answer) => (
+            return answerArray.map((answer, index) => (
                 <Grid item key={answer.AnswerID} xs={12} sm={6} md={4}>
                     <Card
                         sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
@@ -276,9 +267,10 @@ const QuestionDetails = () => {
                             <Typography component="legend" sx={{ fontSize: 14 }} color="text.secondary">Your Rating</Typography>
                             <Rating
                                 name="simple-controlled"
-                                value={userRateValues[answer.AnswerID]}
+                                value={answer.user_rating}
                                 onChange={(event, newValue) => {
-                                    updateUserRateValues(answer.AnswerID, newValue)
+                                    handleRatingChange(answer, index, newValue);
+                                    updateRating(answer.AnswerID, newValue);
                                 }}
                             />
                         </CardContent>
@@ -288,10 +280,28 @@ const QuestionDetails = () => {
         }
     }
 
-    const updateUserRateValues = (answerId, newValue) => {
-        let newUserRateValues = { ...userRateValues }
-        newUserRateValues[answerId] = newValue
-        setUserRateValues(newUserRateValues)
+    const handleRatingChange = (answer, index, newValue) => {
+        const updatedAnswer = { ...answer, user_rating: newValue };
+        const updatedAnswerArray = [...fetchedAnsweres];
+        updatedAnswerArray[index] = updatedAnswer;
+        setFetchedAnsweres(updatedAnswerArray);
+    };
+
+    const updateRating = (answer_id, rating) => {
+        const updateRating = {
+            rating: rating,
+            user: userName
+        }
+        const url = BASE_URL +"/answers/" + answer_id + "/rating";
+        const getData = async () => {
+            await axios.post(url, updateRating, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+        };
+        getData();
+
     }
 
     const BackToQuestionsButton = () => {
@@ -338,7 +348,6 @@ const QuestionDetails = () => {
                 <QuestionDetails />
                 <AnswertTitle />
                 <Container sx={{ py: 1 }} maxWidth="md">
-                    {/* End hero unit */}
                     <Grid container spacing={4}>
                         <Answers />
                     </Grid>

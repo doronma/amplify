@@ -24,7 +24,6 @@ function Banner() {
   useEffect(() => {
 
     getCognitoSession().then((session) => {
-      console.log(session)
       setCurrentSession(session)
     }, (err) => {
       setCurrentSession(null)
