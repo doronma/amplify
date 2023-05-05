@@ -1,26 +1,41 @@
-import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import { createContext } from 'react';
+import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 import UserPool from '../UserPool';
 
 const AccountContext = createContext();
 
 const Account = (props) => {
-  const getSession = async () => {
-    await new Promise((resolve, reject) => {
-      const user = UserPool.getCurrentUser();
-      if (user) {
-        user.getSession((err, session) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(session);
-          }
-        });
-      } else {
-        reject();
+
+  const getCognitoSession = () => {
+    return new Promise((resolve, reject) => {
+      const cognitoUser = UserPool.getCurrentUser();
+      if (!cognitoUser){
+        reject(new Error('No User'))
       }
-    });
-  };
+
+      cognitoUser.getSession((err, result) => {
+        if (err || !result) {
+          reject(new Error('Failure getting Cognito session: ' + err))
+          return
+        }
+
+        // Resolve the promise with the session credentials
+        console.debug('Successfully got session: ' + JSON.stringify(result))
+        const session = {
+          credentials: {
+            accessToken: result.accessToken.jwtToken,
+            idToken: result.idToken.jwtToken,
+            refreshToken: result.refreshToken.token
+          },
+          user: {
+            userName: result.idToken.payload['cognito:username'],
+            email: result.idToken.payload.email
+          }
+        }
+        resolve(session)
+      })
+    })
+  }
 
   const authenticate = async (Username, Password) => {
     await new Promise((resolve, reject) => {
@@ -58,11 +73,8 @@ const Account = (props) => {
     window.location.href = '/';
   };
 
-  const getUserName = () => UserPool.getCurrentUser().getUsername();
- 
-
   return (
-    <AccountContext.Provider value={{ authenticate, getSession, logout, getUserName }}>
+    <AccountContext.Provider value={{ authenticate, getCognitoSession, logout }}>
       {props.children}
     </AccountContext.Provider>
   );

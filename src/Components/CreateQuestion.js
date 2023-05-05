@@ -1,4 +1,8 @@
-import * as React from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import axios from "axios";
+
 import Avatar from '@mui/material/Avatar';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import Button from '@mui/material/Button';
@@ -7,37 +11,44 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useContext } from 'react';
+
 import { AccountContext } from './Account';
-import { useNavigate } from 'react-router-dom';
 import { getUuid, getCurrentTime } from "../utils/formUtils"
-import axios from "axios";
+import { BASE_URL } from '../utils/services';
 
 
 export default function CreateQuestion() {
 
-  const { getUserName } = useContext(AccountContext);
+  const { getCognitoSession } = useContext(AccountContext);
+  const [userName,setUserName] = useState("")
+  const [token,setToken] = useState("")
   const navigate = useNavigate()
+
+  useEffect(() => {
+    getCognitoSession().then((session) => {
+      setUserName(session.user.userName)
+      setToken(session.credentials.idToken)
+    }, (err) => {
+    })
+  }, [getCognitoSession]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const question = {
-
       QuestionID: data.get('id'),
       date: getCurrentTime(),
       message: data.get('question'),
       userName: data.get('user')
-
     }
-    const url = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions";
+    const url = BASE_URL + "/questions";
     const getData = async () => {
-      const result = await axios.post(url, question, {
+      await axios.post(url, question, {
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
         }
       })
-      console.log(result)
       navigate('/Main');
     };
     getData();
@@ -79,7 +90,7 @@ export default function CreateQuestion() {
               id="user"
               label="User"
               name="user"
-              value={getUserName()}
+              value={userName}
             />
             <TextField
               margin="normal"

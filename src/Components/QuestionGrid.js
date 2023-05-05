@@ -1,4 +1,8 @@
-import * as React from 'react';
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
+import axios from "axios";
+
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -10,10 +14,10 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+
 import { parseDate } from '../utils/formUtils'
+import { BASE_URL } from "../utils/services";
+
 
 export default function QuestionGrid() {
 
@@ -29,13 +33,13 @@ export default function QuestionGrid() {
         }
     }
 
-    const url = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions"
+    const url = BASE_URL + "/questions"
     const [fetchedData, setFetchedData] = useState([]);
     const [searchString, setSearchString] = useState('')
 
-    const handleMessageSearchChange = (event) =>{
+    const handleMessageSearchChange = (event) => {
         const value = event.target.value
-        if (value.length === 0 || value.length>=3){
+        if (value.length === 0 || value.length >= 3) {
             setSearchString(value)
         }
     }
@@ -49,11 +53,11 @@ export default function QuestionGrid() {
         getData();
     }, []);
 
-    const questions = () => {
+    const Questions = () => {
         if (fetchedData.data) {
             let questionArray = fetchedData.data;
             questionArray = questionArray.filter((question) => {
-                if (searchString.length===0) return true
+                if (searchString.length === 0) return true
                 return question.message.toLowerCase().indexOf(searchString.toLowerCase()) >= 0
             });
 
@@ -124,29 +128,30 @@ export default function QuestionGrid() {
                             This is the collection of Physicis Questions
                         </Typography>
                         <TextField
-                                    margin="normal"
-                                    fullWidth
-                                    id="messageSearch"
-                                    label="Question Search"
-                                    name="messageSearch"
-                                    onChange={handleMessageSearchChange}
-                                />
+                            margin="normal"
+                            fullWidth
+                            id="messageSearch"
+                            label="Question Search"
+                            name="messageSearch"
+                            onChange={handleMessageSearchChange}
+                        />
+                         <Button variant="contained" onClick={createQuestion}>Create new question</Button>
                     </Container>
                 </Box>
                 <Container sx={{ py: 1 }} maxWidth="md">
                     {/* End hero unit */}
                     <Grid container spacing={4}>
-                        {questions()}
+                       <Questions/>
                     </Grid>
                 </Container>
                 <Stack
-                            sx={{ pt: 4 }}
-                            direction="row"
-                            spacing={2}
-                            justifyContent="center"
-                        >
-                            <Button variant="contained" onClick={createQuestion}>Create new question</Button>
-                        </Stack>
+                    sx={{ pt: 4 }}
+                    direction="row"
+                    spacing={2}
+                    justifyContent="center"
+                >
+                    <Button variant="contained" onClick={createQuestion}>Create new question</Button>
+                </Stack>
             </main>
         </div>
     );

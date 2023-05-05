@@ -1,7 +1,7 @@
-
+import { useEffect, useState } from "react";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,6 +10,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
+import { BASE_URL } from "../utils/services";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -31,9 +33,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-
 function QuestionList() {
-    const url = "https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev/questions"
+    const url = BASE_URL + "/questions"
     const [fetchedData, setFetchedData] = useState([]);
     useEffect(() => {
         const getData = async () => {
@@ -44,7 +45,7 @@ function QuestionList() {
         getData();
     }, []);
 
-    const questions = () => {
+    const Questions = () => {
         if (fetchedData.data) {
             const questionArray = fetchedData.data
             questionArray.sort((a, b) => {
@@ -85,7 +86,7 @@ function QuestionList() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {questions()}
+                        <Questions/>
                     </TableBody>
                 </Table>
             </TableContainer>

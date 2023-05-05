@@ -1,13 +1,15 @@
+import { Route, Routes } from 'react-router-dom';
+
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
+import Box from '@mui/material/Box';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import QuestionGrid from './QuestionGrid';
 import QuestionList from './QuestionList';
 import CreateQuestion from './CreateQuestion';
 import QuestionDetails from './QuestionDetails';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 
 const theme = createTheme();
 
@@ -25,12 +27,7 @@ function Copyright() {
 }
 
 function Container() {
-
-
-
-
     return (
-
         <div>
             <ThemeProvider theme={theme}>
                 <Routes>
@@ -39,10 +36,7 @@ function Container() {
                     <Route path="/Table" element={<QuestionList />} />
                     <Route path="/CreateQuestion" element={<CreateQuestion />} />
                     <Route path="/QuestionDetails/:id" element={<QuestionDetails />} />
-
                 </Routes>
-               
-                {/* Footer */}
                 <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
                     <Typography variant="h6" align="center" gutterBottom>
                         Physicis QA
@@ -57,7 +51,6 @@ function Container() {
                     </Typography>
                     <Copyright />
                 </Box>
-                {/* End footer */}
             </ThemeProvider>
         </div>
     );

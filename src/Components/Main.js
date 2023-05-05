@@ -1,22 +1,19 @@
 import { useContext, useEffect } from 'react';
-import { AccountContext } from './Account';
 import { useNavigate } from 'react-router-dom';
+
+import { AccountContext } from './Account';
 import Container from './Container'
 import Banner from './Banner';
 
 const Main = () => {
-  const { getSession  } = useContext(AccountContext);
+  const { getCognitoSession } = useContext(AccountContext);
   const navigate = useNavigate()
   useEffect(() => {
-    getSession()
-      .then((session) => {
-        console.log('Session: ', session);
-      })
-      .catch((err) => {
-        console.log('Session: ', err);
-        navigate('/Login')
-      });
-  }, []);
+    getCognitoSession().then((session) => {
+    }, (err) => {
+      navigate('/Login')
+    })
+  }, [getCognitoSession,navigate]);
 
   return (
     <div>
