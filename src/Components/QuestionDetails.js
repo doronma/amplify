@@ -26,6 +26,7 @@ const QuestionDetails = () => {
 
     const { getCognitoSession } = useContext(AccountContext);
     const [userName, setUserName] = useState("")
+    const [token,setToken] = useState("")
 
     let { id } = useParams();
     const navigate = useNavigate()
@@ -49,8 +50,10 @@ const QuestionDetails = () => {
 
         getCognitoSession().then((session) => {
             setUserName(session.user.userName)
+            setToken(session.credentials.idToken)
             getAnsweres(session.user.userName);
         }, (err) => {
+            console.log(err)
         })
 
         const getQuestionDetails = async () => {
@@ -134,6 +137,7 @@ const QuestionDetails = () => {
             await axios.post(url_new_question, answer, {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
                 }
             })
             getAnsweres(userName);
@@ -297,6 +301,7 @@ const QuestionDetails = () => {
             await axios.post(url, updateRating, {
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
                 }
             })
         };

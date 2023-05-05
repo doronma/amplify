@@ -21,11 +21,13 @@ export default function CreateQuestion() {
 
   const { getCognitoSession } = useContext(AccountContext);
   const [userName,setUserName] = useState("")
+  const [token,setToken] = useState("")
   const navigate = useNavigate()
 
   useEffect(() => {
     getCognitoSession().then((session) => {
       setUserName(session.user.userName)
+      setToken(session.credentials.idToken)
     }, (err) => {
     })
   }, [getCognitoSession]);
@@ -44,6 +46,7 @@ export default function CreateQuestion() {
       await axios.post(url, question, {
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
         }
       })
       navigate('/Main');
