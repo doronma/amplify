@@ -6,7 +6,7 @@ info:
   contact:
     name: Yaara Marcus
 servers:
-  - url: 'pwqmfe6648.execute-api.eu-central-1.amazonaws.com'
+  - url: 'https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev'
 tags:
   - name: PhyisicsQA
     description: PhyisicsQA API
@@ -36,11 +36,6 @@ paths:
     parameters:
       - name: "Id"
         in: "path"
-        required: true
-        schema:
-           type: "string"
-      - name: "user"
-        in: "query"
         required: true
         schema:
            type: "string"
@@ -91,6 +86,11 @@ paths:
         name: id
         in: path
         required: true
+      - name: "user"
+        in: "query"
+        required: true
+        schema:
+           type: "string"
     get:
       tags: [PhyisicsQA]
       responses:
