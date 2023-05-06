@@ -6,7 +6,10 @@ info:
   contact:
     name: Yaara Marcus
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'pwqmfe6648.execute-api.eu-central-1.amazonaws.com'
+tags:
+  - name: PhyisicsQA
+    description: PhyisicsQA API
 paths:
   '/answers/{Id}':
     parameters:
