@@ -1,6 +1,4 @@
 openapi: 3.0.0
-x-stoplight:
-  id: lslpjbwkoe17z
 info:
   title: PhyisicsQA
   version: '1.0'
@@ -18,6 +16,8 @@ paths:
         in: path
         required: true
     post:
+      tags: [PhyisicsQA]
+      description: Create a new Answer
       operationId: post-questions-Id
       responses:
         '201':
@@ -29,9 +29,33 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AnswerPost'
+  /answers/{Id}/rating:
+    parameters:
+      - name: "Id"
+        in: "path"
+        required: true
+        schema:
+           type: "string"
+      - name: "user"
+        in: "query"
+        required: true
+        schema:
+           type: "string"
+    post:
+      tags: [PhyisicsQA]
+      description: Update User Rating for answer
+      operationId: post-rating-Id
+      responses:
+        "200":
+          description: "200 response"
+      requestBody:
+        content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/AnswerRating'
   /questions:
     get:
-      tags: []
+      tags: [PhyisicsQA]
       responses:
         '200':
           description: OK
@@ -44,6 +68,7 @@ paths:
       operationId: get-questions
       description: Get All Questions
     post:
+      tags: [PhyisicsQA]
       operationId: post-questions
       responses:
         '201':
@@ -64,7 +89,7 @@ paths:
         in: path
         required: true
     get:
-      tags: []
+      tags: [PhyisicsQA]
       responses:
         '200':
           description: OK
@@ -82,7 +107,7 @@ paths:
         in: path
         required: true
     get:
-      tags: []
+      tags: [PhyisicsQA]
       responses:
         '200':
           description: OK
@@ -96,21 +121,16 @@ components:
   schemas:
     AnswerList:
       title: AnswerList
-      x-stoplight:
-        id: v2vxjj7wlxb40
       type: object
       properties:
         id:
           type: array
           items:
-            $ref: '#/components/schemas/AnswerPost'
+            $ref: '#/components/schemas/Answer'
     AnswerPost:
       title: AnswerPost
-      x-stoplight:
-        id: ue20z51v367st
       type: object
       description: Question Post Data
-      x-internal: false
       properties:
         answerId:
           type: string
@@ -134,10 +154,34 @@ components:
         - teacherName
         - date
         - message
+    Answer:
+      title: Answer
+      type: object
+      description: Question Post Data
+      properties:
+        answerId:
+          type: string
+          maxLength: 20
+          minLength: 20
+        teacherName:
+          type: string
+          minLength: 5
+          maxLength: 20
+        date:
+          type: string
+          format: date-time
+        message:
+          type: string
+          maxLength: 250
+          minLength: 20
+        questionId:
+          type: string
+        user_rating:
+          type: number
+        avg_rating:
+          type: number
     QuestionList:
       title: QuestionList
-      x-stoplight:
-        id: bmztee4cwbwab
       type: object
       properties:
         questions:
@@ -145,12 +189,9 @@ components:
           items:
             $ref: '#/components/schemas/QuestionPost'
     QuestionPost:
-      title: QuestionPost
-      x-stoplight:
-        id: cgrny7q688pt4
+      title: Question
       type: object
-      description: Question Post Data
-      x-internal: false
+      description: Question Post Date
       properties:
         id:
           type: string
@@ -165,3 +206,14 @@ components:
           type: string
           maxLength: 250
           minLength: 20
+    AnswerRating:
+      title: AnswerRating
+      type: object
+      description: Answer Rating Post Data
+      properties:
+        user:
+          type: string
+          minLength: 5
+          maxLength: 20
+        rating:
+          type: number
