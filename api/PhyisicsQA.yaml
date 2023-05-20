@@ -1,15 +1,15 @@
 openapi: 3.0.0
 info:
-  title: PhyisicsQA
+  title: PhysicsQA
   version: '1.0'
-  description: Manage Phyisics Questions
+  description: Manage Physics Questions
   contact:
     name: Yaara Marcus
 servers:
   - url: 'https://pwqmfe6648.execute-api.eu-central-1.amazonaws.com/dev'
 tags:
-  - name: PhyisicsQA
-    description: PhyisicsQA API
+  - name: PhysicsQA
+    description: PhysicsQA API
 paths:
   '/answers/{Id}':
     parameters:
@@ -19,7 +19,7 @@ paths:
         in: path
         required: true
     post:
-      tags: [PhyisicsQA]
+      tags: [PhysicsQA]
       description: Create a new Answer
       operationId: post-questions-Id
       responses:
@@ -40,7 +40,7 @@ paths:
         schema:
            type: "string"
     post:
-      tags: [PhyisicsQA]
+      tags: [PhysicsQA]
       description: Update User Rating for answer
       operationId: post-rating-Id
       responses:
@@ -53,7 +53,7 @@ paths:
                   $ref: '#/components/schemas/AnswerRating'
   /questions:
     get:
-      tags: [PhyisicsQA]
+      tags: [PhysicsQA]
       responses:
         '200':
           description: OK
@@ -66,7 +66,7 @@ paths:
       operationId: get-questions
       description: Get All Questions
     post:
-      tags: [PhyisicsQA]
+      tags: [PhysicsQA]
       operationId: post-questions
       responses:
         '201':
@@ -92,7 +92,7 @@ paths:
         schema:
            type: "string"
     get:
-      tags: [PhyisicsQA]
+      tags: [PhysicsQA]
       responses:
         '200':
           description: OK
@@ -110,7 +110,7 @@ paths:
         in: path
         required: true
     get:
-      tags: [PhyisicsQA]
+      tags: [PhysicsQA]
       responses:
         '200':
           description: OK
