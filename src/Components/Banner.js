@@ -73,7 +73,7 @@ function Banner() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Phyisics Questions/Answers
+              Physics Questions/Answers
             </Typography>
             <LoginButton />
           </Toolbar>

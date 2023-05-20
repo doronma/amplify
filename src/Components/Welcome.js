@@ -17,7 +17,7 @@ function Welcome() {
     <div>
       <Banner />
       <div style={{ margin: '100px' }}>
-        <h2><center>Welcome to Phyisics QA</center></h2>
+        <h2><center>Welcome to Physics QA</center></h2>
         <br></br>
         <Button style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto', display: 'block' }} onClick={start}>
           <img src={physics_image} alt="physicis" />
