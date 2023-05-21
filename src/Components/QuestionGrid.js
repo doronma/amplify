@@ -125,7 +125,7 @@ export default function QuestionGrid() {
                             Questions List Page
                         </Typography>
                         <Typography variant="h5" align="center" color="text.secondary" paragraph>
-                            This is the collection of Physicis Questions
+                            This is the collection of Physics Questions
                         </Typography>
                         <TextField
                             margin="normal"
