@@ -39,7 +39,7 @@ function Container() {
                 </Routes>
                 <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
                     <Typography variant="h6" align="center" gutterBottom>
-                        Physicis QA
+                        Physics QA
                     </Typography>
                     <Typography
                         variant="subtitle1"

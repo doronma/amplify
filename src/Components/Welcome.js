@@ -20,7 +20,7 @@ function Welcome() {
         <h2><center>Welcome to Physics QA</center></h2>
         <br></br>
         <Button style={{ width: '50%', marginLeft: 'auto', marginRight: 'auto', display: 'block' }} onClick={start}>
-          <img src={physics_image} alt="physicis" />
+          <img src={physics_image} alt="Physics" />
         </Button>
       </div></div>
   );
